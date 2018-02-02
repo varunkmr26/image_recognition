@@ -5,9 +5,9 @@ import numpy as np
 #to the numArExx.txt filr
 def createExamples():
     numberArrayExamples = open('numArEx.txt','a')
-    numbersWeHave = range(1,10)
-    for eachNum in numbersWeHave:
-        for furtherNum in numbersWeHave:
+    #numbersWeHave = range(1,10)
+    for eachNum in range(0,10):
+        for furtherNum in range(1,10):
 
             imgFilePath = 'images/numbers/'+str(eachNum)+'.'+str(furtherNum)+'.png'
             ei = Image.open(imgFilePath)

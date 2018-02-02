@@ -31,20 +31,22 @@ def whatNumIsThis(filePath):
     matchedAr = []
     loadExamps = open('numArEx.txt','r').read()
     loadExamps = loadExamps.split('\n')
-    
+    loadExamps = loadExamps[:-1];   
     i = Image.open(filePath)
     iar = np.array(i)
 #The next 5 lines of code only if alpha channel is turned off
-    z = np.ones((8,1),dtype = np.uint8)
-    z = z * 255
-    niar = np.zeros((8,8,4),dtype = np.uint8)
-    for i in range(0,8):
-        niar[i] = np.append(iar[i], z,axis = 1)
-    tiar = threshold(niar)#Use iar if alpha channel is turned on
+#    z = np.ones((8,1),dtype = np.uint8)
+#    z = z * 255
+#    niar = np.zeros((8,8,4),dtype = np.uint8)
+#    for i in range(0,8):
+#        niar[i] = np.append(iar[i], z,axis = 1)
+    tiar = threshold(iar)#Use niar if alpha channel is turned off
     iarl = tiar.tolist()
     
     inQuestion = str(iarl)
-    
+    maxno = 0
+    maxc = 0
+    curc = 0
     for eachExample in loadExamps:
         try:
             splitEx = eachExample.split('::')
@@ -55,11 +57,15 @@ def whatNumIsThis(filePath):
             eachPixInQ = inQuestion.split('],')
             
             x = 0
-            
+            curc = 0
             while x < len(eachPixEx):
                 if eachPixEx[x] == eachPixInQ[x]:
                     matchedAr.append(int(currentNum))
-                
+
+                    curc += 1
+                if (curc > maxc):
+                    maxc = curc
+                    maxno = currentNum
                 x+=1
             
         except Exception as e:
@@ -89,7 +95,7 @@ def whatNumIsThis(filePath):
 
     xloc = plt.MaxNLocator(12)
     ax2.xaxis.set_major_locator(xloc)
-
+    print("The number detected is: " + str(maxno))
     plt.show()
 
-whatNumIsThis('images/test/test1.png')
+whatNumIsThis('images/test/test5.png')
